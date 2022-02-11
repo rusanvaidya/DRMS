@@ -1,0 +1,134 @@
+<!doctype html>
+{% load static %}
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Digital Report System</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/slicknav.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/flaticon.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/progressbar_barfiller.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/gijgo.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animate.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animated-headline.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome-all.min.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/themify-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/slick.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/nice-select.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    
+</head>
+
+<body >
+    <!-- ? Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="{% static 'assets/img/logo/loder.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Preloader Start -->
+    <header>
+        <!-- Header Start -->
+        <div class="header-area header-transparent">
+            <div class="main-header ">
+                <div class="header-bottom  header-sticky">
+                    <div class="container-fluid">
+                        <div class="row align-items-center">
+                            <!-- Logo -->
+                            <div class="col-xl-2 col-lg-2">
+                                <div class="logo">
+                                    <a href="/"><img src="{% static 'assets/img/logo/loder.png' %}" style="height: 90px; width: 90px;" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-xl-10 col-lg-10">
+                                <div class="menu-wrapper d-flex align-items-center justify-content-end">
+                                    <!-- Main-menu -->
+                                    <div class="main-menu d-none d-lg-block">
+                                        <nav>
+                                            <ul id="navigation">
+                                                <li class="active" ><a href="/" style="color:black">Home</a></li>
+                                                <li><a href="services" style="color:black">Services</a></li>
+                                                <li><a href="about" style="color:black">About</a></li>
+                                                <li><a href="contact" style="color:black">Contact</a></li>
+                                                <!-- Button -->
+                                                {% if email is None %}
+                                                <li class="button-header margin-left "><a href="signup" class="btn">Sign Up</a></li>
+                                                <li class="button-header"><a href="login" class="btn btn3" style="color:black">Log in</a></li>
+                                                {% else %}
+                                                <li><a href="#" class="btn" style="color:black">{{email}}</a>
+                                                   <ul class="submenu">
+                                                       {% if user_as == 'patient' %}
+                                                            {% if pin == None %}
+                                                            <li><a href=""style="color:black" data-toggle="modal" data-target="#myModal">Medical Report</a></li>
+                                                            {% else %}
+                                                            <li><a href="medicalreport"style="color:black">Medical Report</a></li>
+                                                            {% endif %}
+                                                        {% else %}
+                                                        <li><a href="medicalreport"style="color:black">Medical Report</a></li>
+                                                        {% endif %}
+                                                        <li><a href="settings" style="color:black">Settings</a></li>
+                                                        <li><a href="logout" style="color:black">Logout</a></li>
+                                                    </ul>
+                                                </li>
+                                                {% endif %}
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+                            </div>  
+                              
+                            <!-- Mobile Menu -->
+                            <div class="col-12 black-color">
+                                <div class="mobile_menu d-block d-lg-none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Header End -->
+    </header>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="exampleModalLabel">Verification</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                {% if pin == None %}
+              <form action="medicalreport" method="POST">
+                {% csrf_token %}
+                <div class="form-group">                                                              
+                    <i style="color:red">* Medical Report are kept confidential in this website. <br>Please verify your identity</i>
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">PIN:</label>
+                  <input type="password" class="form-control" style="font-size: 20px; height: 35px;" name="pin" placeholder="XXXX"></textarea>
+                </div>
+              </form>
+              {% endif %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary">Submit</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    
