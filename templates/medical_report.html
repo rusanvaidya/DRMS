@@ -53,11 +53,31 @@
                                 </div>
                                 <div class="properties__caption">
                                     <p>{{details.report_of}}</p>
-                                    <h3><a href="#">Tonsillitis</a></h3>
-                                    <p><table><td>Hospital Name:</td><td>{{details.hospital_name}}</td></table>
-                                    </p>
-                                    <a href="media/{{details.report_file}}" class="border-btn border-btn2">View Report</a>
+                                    <h3><a href="#">{{details.specifed_problem}}</a></h3>
+                                    <p><table><td>Hospital: </td><td>{{details.hospital_name}}</td></table>
+                                    <p>Dr. {{details.doctor_name}}</p>
+                                    <a href="" data-toggle="modal" data-target="#myMedicalView{{details.id}}" class="border-btn border-btn2">View Report</a>
                                 </div>
+                                <div class="modal fade" id="myMedicalView{{details.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="width: 700px;">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title" id="exampleModalLabel">Add Your Medical Report</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div style="text-align: left;">
+                                            <p>{{details.report_of}}</p>
+                                            <h3><a href="#">{{details.specifed_problem}}</a></h3>
+                                            <p><table><td>Hospital: </td><td>{{details.hospital_name}}</td></table>
+                                            <p>Dr. {{details.doctor_name}}</p>
+                                                
+                                            <img src="media/{{details.report_file}}" width="100%">
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>    
                             </div>
                         </div>
                     </div>
@@ -68,11 +88,57 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8">
                         <div class="section-tittle text-center mb-55">
-                            <h2>Your Patient</h2>
+                            <h2>Your Patient History</h2>
                         </div>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-12">
+                        <a href="" class="btn" style="margin: 15px;"  data-toggle="modal" data-target="#myPatMedical">Add New Report <span style="font-size: 25px;">+</span></a>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    {% for details in patient_history %}
+                    <div class="col-lg-4">
+                        <div class="properties properties2 mb-30">
+                            <div class="properties__card">
+                                <div class="properties__img overlay1">
+                                    <a href="#"><img src="{% static 'assets/img/gallery/medical-report.jpg' %}" alt=""></a>
+                                </div>
+                                <div class="properties__caption">
+                                    <p>{{details.report_of}}</p>
+                                    <h3><a href="#">{{details.specifed_problem}}</a></h3>
+                                    <p><table><td>Hospital: </td><td>{{details.hospital_name}}</td></table>
+                                    <p>Dr. {{details.doctor_name}}</p>
+                                    <a href="" data-toggle="modal" data-target="#myMedicalView{{details.id}}" class="border-btn border-btn2">View Report</a>
+                                </div>
+                                <div class="modal fade" id="myMedicalView{{details.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="width: 700px;">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title" id="exampleModalLabel">Add Your Medical Report</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div style="text-align: left;">
+                                            <p>{{details.report_of}}</p>
+                                            <h3><a href="#">{{details.specifed_problem}}</a></h3>
+                                            <p><table><td>Hospital: </td><td>{{details.hospital_name}}</td></table>
+                                            <p>Dr. {{details.doctor_name}}</p>
+                                                
+                                            <img src="media/{{details.report_file}}" width="100%">
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
                 {% elif user_as == 'hospital' %}
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8">
@@ -85,6 +151,7 @@
                 {% endif %}
             </div>
         </div>
+
         <div class="modal fade" id="myMedical" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -133,6 +200,56 @@
               </div>
             </div>
         </div>
+
+        <div class="modal fade" id="myPatMedical" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="exampleModalLabel">Add Your Medical Report</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <form method="post" action="new_mrecord" enctype="multipart/form-data">  
+                    {% csrf_token %}  
+                    <div class="modal-body">
+                        <div class="form-group" style="margin: 10px;">
+                            <label for="message-text" class="col-form-label">Hospital Name :</label>
+                            <input type="text" class="form-control" name="hospital" style="font-size: 20px; height: 35px;" placeholder="Hospital Name">
+                        </div>
+                        <div class="form-group" style="margin: 10px;">
+                            <label for="message-text" class="col-form-label">Patient Name :</label>
+                            <input type="text" class="form-control" name="doctor" style="font-size: 20px; height: 35px;" placeholder="Patient Name">
+                        </div>
+                        <div class="form-group" style="margin: 10px;">
+                            <label for="message-text"  class="col-form-label">Report for: </label>
+                            <select class="form-select" name="report_of">
+                                <option>MRI Report</option>
+                                <option>ENT Report</option>
+                                <option>Dermotology</option>
+                                <option>Neurology</option>
+                                <option>Dental</option>
+                                <option>Ophthalmology</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin: 10px;">
+                            <label for="message-text" class="col-form-label">Specified Problem: </label>
+                            <input type="text" name="problem" style="font-size: 20px; height: 35px;" class="form-control" placeholder="Problem">
+                        </div>
+                        <b>Add Report</b><br>
+                        <label for="reportp"><div style="border: 1px solid #8A2BE2; padding: 30px; border-radius: 8px;"><img src="{% static 'assets/img/icon/plus.png' %}" style="max-width:50px">
+                            <input type="file" name="report_file" id="reportp" style="display: None;">
+                        </div>
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+        </div>
+        
         <!-- Courses area End -->
     </main>
     {% include "footer.html" %}

@@ -17,7 +17,12 @@ def medicalrep(request):
 
                 if user_patient.exists():
                     request.session['pin'] = pin
-                    return render(request, 'medical_report.html', {'email': email, 'user_as': 'patient' ,'pin':pin})
+                    user_patient = info_patient.objects.filter(email=email, pin=request.session['pin'])
+                    pname = user_patient.values('full_name')[0]['full_name']
+                    patient_history = medicalreport.objects.filter(pname=pname)
+                    print(pname)
+                    if user_patient.exists():
+                        return render(request, 'medical_report.html', {'email': email, 'user_as': 'patient', 'pin':request.session['pin'], 'patient_history': patient_history})
                 else:                
                     return redirect("/")
 
@@ -33,7 +38,10 @@ def medicalrep(request):
         return redirect("/")
     
     if doctor.exists():
-        return render(request, 'medical_report.html', {'email': email, 'user_as': 'doctor'})
+        user_doctor = info_doctor.objects.filter(email=email)
+        doc_name = user_doctor.values('full_name')[0]['full_name']
+        patient_history = medicalreport.objects.filter(doctor_name=doc_name)
+        return render(request, 'medical_report.html', {'email': email, 'user_as': 'doctor', 'patient_history': patient_history})
 
     
     if hospital.exists():

@@ -42,6 +42,7 @@ def register_doctor(request):
         password = request.POST['password']
         confirm = request.POST['re_password']
         field = request.POST['field']
+        hospital = request.POST['hospital']
 
         if password == confirm:
             if info_doctor.objects.filter(email=email).exists():
@@ -49,7 +50,7 @@ def register_doctor(request):
                 return redirect('../register')
 
             else:
-                user = info_doctor(full_name=full_name, email=email, password=password, field=field)
+                user = info_doctor(full_name=full_name, email=email, password=password, field=field, hospital=hospital)
                 user.save()
                 request.session['email'] = email
                 return redirect('/')
@@ -67,7 +68,7 @@ def register_hospital_admin(request):
         password = request.POST['password']
         confirm = request.POST['re_password']
         city = request.POST['city']
-        hospital_pan = request.POST['hospital_pan']
+        hospital_pan = request.POST['pan_no']
 
         if password == confirm:
             if info_hospital.objects.filter(email=email).exists():
